@@ -1,0 +1,283 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login or Create Account</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: rgba(34, 34, 34, 0.95);
+      padding: 40px 32px 32px 32px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 340px;
+    }
+    h2 {
+      margin-bottom: 24px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 2rem;
+      text-align: center;
+    }
+    input {
+      margin: 10px 0;
+      padding: 12px 16px;
+      border: none;
+      width: 100%;
+      border-radius: 8px;
+      background: #232526;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    input:focus {
+      box-shadow: 0 0 0 2px #00bcd4;
+      background: #26282b;
+    }
+    button {
+      padding: 12px 0;
+      width: 100%;
+      background: linear-gradient(90deg, #00bcd4 0%, #2196f3 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 14px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 2px 8px rgba(0,188,212,0.08);
+    }
+    button:hover {
+      background: linear-gradient(90deg, #2196f3 0%, #00bcd4 100%);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .divider {
+      margin: 18px 0 10px 0;
+      color: #bbb;
+      font-size: 0.95rem;
+      position: relative;
+      text-align: center;
+      width: 100%;
+    }
+    .divider:before, .divider:after {
+      content: '';
+      display: inline-block;
+      width: 40%;
+      height: 1px;
+      background: #444;
+      vertical-align: middle;
+      margin: 0 8px;
+    }
+    @media (max-width: 400px) {
+      .container {
+        min-width: 90vw;
+        padding: 24px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Login or Create Account</h2>
+    
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Password" />
+    <button onclick="alert('Logged in successfully')">Login</button>
+    <div class="divider">or</div>
+    <button onclick="alert('Account created!')">Create Account</button>
+  </div>
+  <script>
+   function loginUser(e) {
+  e.preventDefault();
+
+  // Here you can validate login details if needed
+  localStorage.setItem("isLoggedIn", "true");
+
+  alert("✅ Login successful!");
+  window.location.href = "home.html"; // or redirect to shop
+}
+
+    function createAccount(e) {
+      e.preventDefault();
+      // Ideally you'd save user data here
+      localStorage.setItem("isLoggedIn", "true");
+      window.location.href = "cart.html";
+    }
+    document.querySelector("button").addEventListener("click", loginUser);
+    document.querySelectorAll("button")[1].addEventListener("click", createAccount);
+
+    
+    
+
+
+  </script>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🔐 Login - TFI Fashions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 32px 24px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 400px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .login-container:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(5, 5, 5, 0.93);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      color: #000;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+    }
+    input:focus {
+      background: #f0f0f0;
+      box-shadow: 0 0 0 2px #31b6b6;
+    }
+    input::placeholder {
+      color: #888;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #31b6b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #04fbee;
+      transform: scale(1.05);
+    }
+
+    .signup-link {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #fff;
+      transition: color 0.2s;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+     
+    }
+
+    .signup-link a {
+      color: #f78b07;
+      
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>🔐 Login to TFI</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <input type="password" id="password" placeholder="Enter your password" required />
+      <button type="submit">Login</button>
+    </form>
+    <div class="signup-link">
+      Don't have an account? <a href="create.html">Create one</a>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user) {
+        alert("❌ No account found. Please create one.");
+        return;
+      }
+
+      if (email === user.email && password === user.password) {
+        // Save login state
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", JSON.stringify(user));
+
+        alert("✅ Login successful!");
+        window.location.href = "home.html";
+      } else {
+        alert("❌ Incorrect email or password.");
+      }
+    });
+  </script>
+
+</body>
+</html>

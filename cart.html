@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🛒 TFI Cart</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      font-family: 'Poppins', sans-serif;
+      color: #f3f3f3;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+    }
+    h2 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-top: 40px;
+      letter-spacing: 2px;
+      color: #ffb347;
+      text-shadow: 0 2px 8px #0006;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 30px auto 20px auto;
+      max-width: 600px;
+    }
+    input, select {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1em;
+      background: #232526;
+      color: #fff;
+      box-shadow: 0 2px 8px #0002;
+      transition: box-shadow 0.2s;
+    }
+    input:focus, select:focus {
+      box-shadow: 0 4px 16px #ffb34755;
+    }
+    #cartList {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .item {
+      background: #232526;
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 24px #0003;
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+    .item:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 8px 32px #ffb34733;
+    }
+    .item img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      margin-right: 22px;
+      border-radius: 10px;
+      border: 2px solid #ffb347;
+      background: #fff;
+    }
+    .info {
+      flex: 1;
+      font-size: 1.08em;
+      color: #fff;
+    }
+    .info strong {
+      color: #ffb347;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+    .remove-btn {
+      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1em;
+      margin-left: 18px;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 2px 8px #ff4b2b33;
+    }
+    .remove-btn:hover {
+      background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+      transform: scale(1.08);
+    }
+    .totals {
+      margin: 40px auto 0 auto;
+      background: #232526;
+      padding: 28px 32px;
+      border-radius: 16px;
+      max-width: 400px;
+      box-shadow: 0 4px 24px #0003;
+      font-size: 1.15em;
+    }
+    .totals p {
+      margin: 12px 0;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+    }
+    .totals strong {
+      color: #ffb347;
+      font-size: 1.2em;
+    }
+    @media (max-width: 600px) {
+      .controls, .totals, #cartList {
+        max-width: 95vw;
+        padding: 0 5vw;
+      }
+      .item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 10px;
+      }
+      .remove-btn {
+        margin: 12px 0 0 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🛒 Your TFI Cart</h2>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search hero/movie/outfit" oninput="filterCart()" />
+    <select onchange="sortCart(this.value)">
+      <option value="">Sort By</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+      <option value="az">Outfit A-Z</option>
+    </select>
+  </div>
+
+  <div id="cartList"></div>
+
+  <div class="totals">
+    <p>Subtotal: <span>₹<span id="subtotal">0</span></span></p>
+    <p>GST (18%): <span>₹<span id="gst">0</span></span></p>
+    <p>Discount (10%): <span>₹<span id="discount">0</span></span></p>
+    <p><strong>Total: <span>₹<span id="totalAmount">0</span></span></strong></p>
+  </div>
+<script>
+  // 🔐 Check login first
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    alert("🛑 Please login first to view your cart.");
+    window.location.href = "login.html";
+  }
+
+  // ✅ Declare before use
+  let cartItems = [];
+
+  // 📦 Load from localStorage on page load
+  window.onload = () => {
+    const saved = localStorage.getItem("cart");
+    if (saved) {
+      cartItems = JSON.parse(saved);
+      renderCart(cartItems);
+      updateBill(cartItems);
+    }
+  };
+
+  function renderCart(items) {
+    const container = document.getElementById("cartList");
+    container.innerHTML = "";
+
+    items.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "item";
+
+      const img = document.createElement("img");
+      img.src = item.image || "https://via.placeholder.com/70";  // ✅ correct key is "image"
+      img.alt = item.outfit;
+
+      const info = document.createElement("div");
+      info.className = "info";
+      info.innerHTML = `
+        <strong>${item.outfit}</strong><br>
+        ₹${item.price.toFixed(2)}
+      `;
+
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "remove-btn";
+      removeBtn.textContent = "❌ Remove";
+      removeBtn.onclick = () => {
+        cartItems.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+        renderCart(cartItems);
+        updateBill(cartItems);
+      };
+
+      div.appendChild(img);
+      div.appendChild(info);
+      div.appendChild(removeBtn);
+      container.appendChild(div);
+    });
+  }
+
+  function updateBill(items) {
+    let subtotal = items.reduce((sum, item) => sum + item.price, 0);
+    let gst = subtotal * 0.18;
+    let discount = subtotal * 0.10;
+    let total = subtotal + gst - discount;
+
+    document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+    document.getElementById("gst").textContent = gst.toFixed(2);
+    document.getElementById("discount").textContent = discount.toFixed(2);
+    document.getElementById("totalAmount").textContent = total.toFixed(2);
+  }
+
+  function filterCart() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = cartItems.filter(item =>
+      item.outfit.toLowerCase().includes(query)
+    );
+    renderCart(filtered);
+    updateBill(filtered);
+  }
+
+  function sortCart(type) {
+    let sortedItems = [...cartItems];
+    if (type === "low") {
+      sortedItems.sort((a, b) => a.price - b.price);
+    } else if (type === "high") {
+      sortedItems.sort((a, b) => b.price - a.price);
+    } else if (type === "az") {
+      sortedItems.sort((a, b) => a.outfit.localeCompare(b.outfit));
+    }
+    renderCart(sortedItems);
+    updateBill(sortedItems);
+  }
+</script>
+
+</body>
+</html>
+
+
